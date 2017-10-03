@@ -1,0 +1,134 @@
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.menu {
+  border: 2px solid black;
+  height: 60px;
+  line-height:  60px;
+}
+
+.menu {
+  display: block;
+  content: "\0020";
+  clear: both;
+}
+
+.logo-img {
+  float: left;
+  width: 90px;
+  height: 50px;
+}
+
+.listOfMenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item-list {
+  display: inline-block;
+  margin-right: 50px;
+}
+
+.item-link {
+  text-decoration: none;
+  color: black;
+}
+
+.active {
+  color: #61dafb;
+}
+
+.movies {  
+  text-align: center;
+  margin-top: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.movies-left {
+  padding: 0;
+  margin: 0;
+  float: left;
+  width: 60%;
+}
+
+.movie-item {
+  width: 30%;
+  height: 300px;
+  float: left;
+  margin-right: 15px;
+  margin-top: 20px;
+  border: 1px solid #333;
+}
+
+.likes, .count-likes {
+  display: inline-block;
+}
+
+.poster {
+  float: right;
+  width: 80%;
+}
+
+.movie-name {
+  font-size: 0.9em;
+  margin: 0;
+  padding: 0;
+}
+
+.movie-name-link {
+  text-decoration: none;
+  color: black;
+}
+
+.movie-name:hover {
+  color: #d43015;
+  cursor: pointer;
+}
+
+.poster-img {
+  width: 100%;
+
+}
+
+.likes-img {
+  display: block;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.stars {
+  clear: both;
+}
+
+.description {
+  float: right;  
+  border: 1px solid black;
+  width: 38%;
+  margin-top: 40px; 
+}
+
+.description-title {
+  float: left;
+  width: 35%;
+  text-align: center;
+}
+
+.description-about {
+  float: right;
+  width: 65%;
+  font-size: 0.8em;
+}
+
+.description-img {
+  width: 100%;
+}
+
