@@ -1,26 +1,31 @@
-export const CHANGE_COLOR = 'CHANGE_COLOR';
-export const SELECT_MOVIE = 'SELECT_MOVIE';
-export const SORT_MOVIE1 = 'SORT_MOVIE1';
-export const SORT_MOVIE2 = 'SORT_MOVIE2';
-export const SORT_BY_RATING1 = 'SORT_BY_RATING1';
-export const SORT_BY_RATING2 = 'SORT_BY_RATING2';
+export const SORT_BY_LIKES = 'SORT_BY_LIKES';
+export const SORT_BY_RATING = 'SORT_BY_RATING';
+export const SEARCH_MOVIE = 'SEARCH_MOVIE';
 export const LIKE_UP = 'LIKE_UP';
+export const LIKE_DOWN = 'LIKE_DOWN';
 
-export const changeColor = color => ({
-    type: CHANGE_COLOR,
-    payload: color === 'red' ? 'blue' : 'red'
-});
-
-export const sortMovie = (sort) => ({
-    type: sort === 'on' ? SORT_MOVIE1 : SORT_MOVIE2
+export const sortMovieByLikes = (sortByLikes) => ({
+    type: SORT_BY_LIKES,
+    payload: sortByLikes
 });
 
 export const sortMovieByRating = (sortByRating) => ({
-    type: sortByRating === 'on' ? SORT_BY_RATING1 : SORT_BY_RATING2
+    type: SORT_BY_RATING,
+    payload: sortByRating
 });
 
-// export const selectMovie = id => ({
-//     type: SELECT_MOVIE,
-//     payload: id
-// });
+export const search = (flagSearch) => ({
+    type: SEARCH_MOVIE,
+    payload: flagSearch
+});
+
+export const likeUp = (id) => ({
+    type: LIKE_UP,
+    payload: id
+});
+
+export const likeDown = (id) => ({
+    type: LIKE_DOWN,
+    payload: id
+});
 

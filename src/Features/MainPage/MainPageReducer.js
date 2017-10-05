@@ -1,68 +1,80 @@
-import { CHANGE_COLOR, SELECT_MOVIE, SORT_MOVIE1, SORT_MOVIE2, SORT_BY_RATING1, SORT_BY_RATING2 } from './MainPageActions';
+import { SEARCH_MOVIE, SORT_BY_LIKES, SORT_BY_RATING, LIKE_UP, LIKE_DOWN } from './MainPageActions';
 import movies from '../../components/data.js';
 
 const initialState = {
     movies: movies,
-    color: 'green',
-    sort: 'on',
+    initialMovies: movies,
+    sortByLikes: 'on',
     sortByRating: 'on',
-    selectedMovieId: null
+    flagSearch: '',
+    flagLike: 0
 };
 
 const MoviesReducer = (state = initialState, action) => {
     switch (action.type) {
 
-        case CHANGE_COLOR: {
+        case SORT_BY_LIKES: {
             return {
                 ...state,
-                color: action.payload,
-            };
-        }
-
-        case SELECT_MOVIE: {
-            return {
-                ...state,
-                selectedMovieId: action.payload,
-            };
-        }
-
-        case SORT_MOVIE1: {
-            return {
-                ...state,
-                movies: movies.sort(function(a,b) {
-                   return  a.likes - b.likes; 
+                movies: state.movies.sort(function(a,b) {
+                    if (action.payload === 'on') {
+                         return  a.likes - b.likes; 
+                    } else {
+                        return  a.likes + b.likes; 
+                    }
                 }),
-                sort: 'off',
+                sortByLikes: action.payload === 'on' ? 'off' : 'on',
             };
         }
 
-        case SORT_MOVIE2: {
+        case SORT_BY_RATING: {
             return {
                 ...state,
-                movies: movies.sort(function(a,b) {
-                   return  a.likes + b.likes; 
+                movies: state.movies.sort(function(a,b) {
+                    if (action.payload === 'on') {
+                        return  a.stars - b.stars; 
+                    } else {
+                        return  a.stars + b.stars;
+                    }
                 }),
-                sort: 'on',
+                sortByRating: action.payload === 'on' ? 'off' : 'on',
             };
         }
 
-        case SORT_BY_RATING1: {
+        case SEARCH_MOVIE: {
             return {
                 ...state,
-                movies: movies.sort(function(a,b) {
-                   return  a.stars - b.stars; 
+                movies: movies.filter(function(el) {
+                    const regExp = new RegExp(action.payload, 'i')
+                    return ~el.title.search(regExp);
                 }),
-                sortByRating: 'off',
+                flagSearch: action.payload
             };
         }
 
-        case SORT_BY_RATING2: {
+        case LIKE_UP: {
             return {
                 ...state,
-                movies: movies.sort(function(a,b) {
-                   return  a.stars + b.stars; 
+                initialMovies: movies.map(function(el) {
+                    if (el.id === action.payload) {
+                        el.likes = el.likes + 1;
+                    }
+                    return el;
                 }),
-                sortByRating: 'on',
+                flagLike: state.flagLike + 1
+            };
+        }
+
+        case LIKE_DOWN: {
+            return {
+                ...state,
+                initialMovies: movies.map(function(el) {
+                    if (el.id === action.payload) {
+                        el.likes = el.likes - 1;
+                    }
+                    return el;
+                }),
+                flagLike: state.flagLike - 1
             };
         }
 
@@ -72,10 +84,12 @@ const MoviesReducer = (state = initialState, action) => {
     }
 };
 
-// export const getMovies = state => state.movies.data;
-export const getColor = state => state.movies.color;
-export const getMov = state => state.movies.sort;
+export const getMovieByLikes = state => state.movies.sortByLikes;
+export const getFlagSearch = state => state.movies.flagSearch;
 export const getMovieByRating = state => state.movies.sortByRating;
+export const getMovies = state => state.movies.movies;
+export const getInitialMovies = state => state.movies.initialMovies;
+export const getLike = state => state.movies.flagLike;
 
 // export const getSelectedMovie = state => state.movies.data.find((movie) => {
 //     return movie.id === state.movies.selectedMovieId;

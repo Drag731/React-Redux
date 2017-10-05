@@ -2,73 +2,59 @@ import React, { Component } from 'react'
 import './App.css';
 import ItemMovie from './ItemMovie.js';
 import Description from './Description.js';
-import movies from './data.js';
-import { changeColor, sortMovie, sortMovieByRating  } from '../Features/MainPage/MainPageActions';
-import { getColor, getMov, getMovieByRating } from '../Features/MainPage/MainPageReducer';
+import { sortMovieByLikes, sortMovieByRating, search, likeUp, likeDown } from '../Features/MainPage/MainPageActions';
+import { getMovieByLikes, getMovieByRating, getFlagSearch, getMovies, getInitialMovies, getLike } from '../Features/MainPage/MainPageReducer';
 import { connect } from 'react-redux';
 
 class Movies extends Component {
     constructor(props){
         super(props);
-  
-        const selectedId = props.movies && props.movies[0] && props.movies[0].id;
         this.state = {
-          activeId: selectedId,
-          movies: props.movies,
-          likeCount: '',
+          likeCount: ''
         };
-        this.change = this.change.bind(this);
         this.likeUp = this.likeUp.bind(this);
         this.likeDown = this.likeDown.bind(this);
-        this.changeColor = this.changeColor.bind(this);
     }
 
-    changeColor(color) {
-        this.props.changeColor(color);
-    }
-
-    sortMovie(sort) {
-        this.props.sortMovie(sort);
+    sortMovieByLikes(sort) {
+        this.props.sortMovieByLikes(sort);
     }
 
     sortMovieByRating(sort) {
         this.props.sortMovieByRating(sort);
     }
 
-    selectMovie(id) { 
-        this.props.selectMovie(id);
+    search(event) {
+        console.log(event.target.value);
+        this.props.search(event.target.value);
     }
 
-    change(id) {
-        this.setState({activeId: id});
+    likeUp(id) {
+        this.props.likeUp(id);
     }
 
-    likeUp() {
-        this.setState({likeCount: 'up'});
-    }
-
-    likeDown() {
-        this.setState({likeCount: 'down'});
+    likeDown(id) {
+        this.props.likeDown(id);
     }
 
     render() {
-        const activeMovie = this.props.movies.filter((el) => el.id === parseInt(this.state.activeId, 10))[0];
+        const activeMovie = (this.props.movies.filter((el) => el.id === parseInt(this.props.params.id, 10))[0]) || this.props.initialMovies[0];
         return (
             <div className="movies">   
                 <div className="movies-left">
                     <div className="sort-movies">
-                        <h2 style={{ color: this.props.color}} onClick={this.changeColor.bind(this, 'red')}>Sort movies</h2>
+                        <h2>Sort movies</h2>
                         <div className="buttons">
-                            <button onClick={this.sortMovie.bind(this, this.props.sort)}>By likes</button>
+                            <button onClick={this.sortMovieByLikes.bind(this, this.props.sortByLikes)}>By likes</button>
                             <button onClick={this.sortMovieByRating.bind(this, this.props.sortByRating)}>By rating</button><br/>
-                            <input className="search" type="search" /> 
+                            <input onChange={this.search.bind(this)} className="search" type="search" /> 
                         </div>
                     </div>
                     {this.props.movies.map((movie) => {
                         return (<ItemMovie 
                           key={movie.id}
+                          likes={movie.likes}
                           currentMovie={movie} 
-                          change={this.change}
                           likeUp={this.likeUp}
                           likeDown={this.likeDown}
                           changeColor={this.changeColor}
@@ -76,11 +62,9 @@ class Movies extends Component {
                     })}
                     
                 </div>
-                    <Description 
-                      key={this.props.movies.id} 
-                      activeMovie={activeMovie} 
-                      change={this.change}
-                      movies={this.props.movies}
+                    <Description
+                    key={this.props.initialMovies.id} 
+                    activeMovie={activeMovie} 
                     />
             </div>
         )
@@ -88,19 +72,20 @@ class Movies extends Component {
 }
 
 const mapStateToProps = state => ({
-    color: getColor(state),
-    sort: getMov(state),
+    sortByLikes: getMovieByLikes(state),
     sortByRating: getMovieByRating(state),
-    movies: movies
-    // movies: getMovies(state)
-    // selectedMovie: getSelectedMovie(state)
+    flagSearch: getFlagSearch(state),
+    movies: getMovies(state),
+    initialMovies: getInitialMovies(state),
+    flagLikeUp: getLike(state)
 });
 
 const mapDispatchToProps = {
-    changeColor: (color) => changeColor(color),
-    sortMovie: (sort) => sortMovie(sort),
-    sortMovieByRating: (sort) => sortMovieByRating(sort)
-    // selectMovie: id => selectMovie(id)
+    sortMovieByLikes: (sortByLikes) => sortMovieByLikes(sortByLikes),
+    sortMovieByRating: (sortByRating) => sortMovieByRating(sortByRating),
+    search: (flagSearch) => search(flagSearch),
+    likeUp: (id) => likeUp(id),
+    likeDown: (id) => likeDown(id),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movies);
