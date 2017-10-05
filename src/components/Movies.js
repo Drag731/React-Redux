@@ -2,42 +2,26 @@ import React, { Component } from 'react'
 import './App.css';
 import ItemMovie from './ItemMovie.js';
 import Description from './Description.js';
-import { sortMovieByLikes, sortMovieByRating, search, likeUp, likeDown } from '../Features/MainPage/MainPageActions';
-import { getMovieByLikes, getMovieByRating, getFlagSearch, getMovies, getInitialMovies, getLike } from '../Features/MainPage/MainPageReducer';
+import { sortMovieByLikes, sortMovieByRating, search, likeUp, likeDown, changeStars } from '../Features/MainPage/MainPageActions';
+import { getMovieByLikes, getMovieByRating, getFlagSearch, getMovies, getInitialMovies, getLike, getStars } from '../Features/MainPage/MainPageReducer';
 import { connect } from 'react-redux';
 
 class Movies extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-          likeCount: ''
-        };
-        this.likeUp = this.likeUp.bind(this);
-        this.likeDown = this.likeDown.bind(this);
-    }
 
-    sortMovieByLikes(sort) {
-        this.props.sortMovieByLikes(sort);
-    }
+    sortMovieByLikes = (sort) => { this.props.sortMovieByLikes(sort) }
 
-    sortMovieByRating(sort) {
-        this.props.sortMovieByRating(sort);
-    }
+    sortMovieByRating = (sort) => { this.props.sortMovieByRating(sort) }
 
-    search(event) {
-        console.log(event.target.value);
-        this.props.search(event.target.value);
-    }
+    search(event) { this.props.search(event.target.value) }
 
-    likeUp(id) {
-        this.props.likeUp(id);
-    }
+    likeUp = (id) => { this.props.likeUp(id) }
 
-    likeDown(id) {
-        this.props.likeDown(id);
-    }
+    likeDown = (id) => { this.props.likeDown(id) }
+
+    changeStars = (id, movieId) => { this.props.changeStars(id, movieId) }
 
     render() {
+        
         const activeMovie = (this.props.movies.filter((el) => el.id === parseInt(this.props.params.id, 10))[0]) || this.props.initialMovies[0];
         return (
             <div className="movies">   
@@ -53,18 +37,22 @@ class Movies extends Component {
                     {this.props.movies.map((movie) => {
                         return (<ItemMovie 
                           key={movie.id}
+                          id={movie.id}
                           likes={movie.likes}
+                          stars={movie.stars}
                           currentMovie={movie} 
                           likeUp={this.likeUp}
                           likeDown={this.likeDown}
-                          changeColor={this.changeColor}
+                          changeStars={this.changeStars}
                           /> );
                     })}
-                    
                 </div>
                     <Description
                     key={this.props.initialMovies.id} 
-                    activeMovie={activeMovie} 
+                    activeMovie={activeMovie}
+                    stars={activeMovie.stars}
+                    id={activeMovie.id}
+                    changeStars={this.changeStars} 
                     />
             </div>
         )
@@ -77,7 +65,8 @@ const mapStateToProps = state => ({
     flagSearch: getFlagSearch(state),
     movies: getMovies(state),
     initialMovies: getInitialMovies(state),
-    flagLikeUp: getLike(state)
+    flagLike: getLike(state),
+    flagStars: getStars(state)
 });
 
 const mapDispatchToProps = {
@@ -86,6 +75,7 @@ const mapDispatchToProps = {
     search: (flagSearch) => search(flagSearch),
     likeUp: (id) => likeUp(id),
     likeDown: (id) => likeDown(id),
+    changeStars: (id, movieId) => changeStars(id, movieId)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movies);

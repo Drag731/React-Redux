@@ -6,19 +6,10 @@ import {connect} from 'react-redux';
 
 class ItemMovie extends Component {
 
-    constructor(props){
-        super(props);
-        this.likeDown = this.likeDown.bind(this);
-        this.state = { likeCount: props.currentMovie.likes };
-    }
-
-    likeDown() {
-        this.setState({lilkeCount: this.props.currentMovie.likes -= 1});
-        this.props.likeDown();
-    }
+    changeStars = (id, movieId)=> { this.props.changeStars(id, movieId) }
 
     render() {
-        console.log(this.props.currentMovie.likes)
+
         return (
             <div className="movie-item">
                 <div className="likes">
@@ -36,24 +27,13 @@ class ItemMovie extends Component {
                 </div>
                 <div className="count-likes">{this.props.likes}</div>
                 <div className="stars">
-                    <Stars currentMovie= {this.props.currentMovie}/>
+                    <Stars changeStars={this.props.changeStars} stars={this.props.stars} id={this.props.id} />
                 </div>
             </div>
         );
     }
 }
 
-function mapStateToProps (state) {
-    return {
-        
-    }
-}
 
-function matchDispatchToProps (dispatch) {
-    return {
-        
-    }
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(ItemMovie);
+export default ItemMovie;
 

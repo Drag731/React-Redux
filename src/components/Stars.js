@@ -3,15 +3,21 @@ import './font-awesome.min.css';
 
 class Stars extends Component {
 
+    changeStars(event) {
+        let movieId = this.props.id;
+        let starId = parseInt(event.target.id, 10);
+        this.props.changeStars(starId, movieId);
+    };
+
     render() {
         const movie = this.props.currentMovie;
-        let i = 0;
+        let i = 1;
         const arrayOfStarsClass = [];
-        while (i < 5) {
-            if (i < movie.stars) {
-                arrayOfStarsClass.push(<i className="fa fa-star" key={arrayOfStarsClass.length}></i>);
+        while (i < 6) {
+            if (i <= this.props.stars) {
+                arrayOfStarsClass.push(<i onClick={this.changeStars.bind(this)} className="fa fa-star" id={i} key={arrayOfStarsClass.length}></i>);
             } else {
-                arrayOfStarsClass.push(<i className="fa fa-star-o" key={arrayOfStarsClass.length}></i>);
+                arrayOfStarsClass.push(<i onClick={this.changeStars.bind(this)} className="fa fa-star-o" id={i} key={arrayOfStarsClass.length}></i>);
             }
             i++;
         }

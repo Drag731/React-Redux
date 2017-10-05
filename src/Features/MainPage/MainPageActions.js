@@ -3,6 +3,7 @@ export const SORT_BY_RATING = 'SORT_BY_RATING';
 export const SEARCH_MOVIE = 'SEARCH_MOVIE';
 export const LIKE_UP = 'LIKE_UP';
 export const LIKE_DOWN = 'LIKE_DOWN';
+export const CHANGE_STARS = 'CHANGE_STARS'
 
 export const sortMovieByLikes = (sortByLikes) => ({
     type: SORT_BY_LIKES,
@@ -27,5 +28,11 @@ export const likeUp = (id) => ({
 export const likeDown = (id) => ({
     type: LIKE_DOWN,
     payload: id
+});
+
+export const changeStars = (id, movieId) => ({
+    type: CHANGE_STARS,
+    payload: id,
+    movieId: movieId
 });
 

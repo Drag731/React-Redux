@@ -3,6 +3,8 @@ import Stars from './Stars.js';
 
 class Description extends Component {
 
+    changeStars = (id, movieId) => { this.props.changeStars(id, movieId) }
+
     render() {
 
         return (
@@ -10,7 +12,7 @@ class Description extends Component {
                 <div className="description-title">
                     <p>{this.props.activeMovie.title}</p>
                     <p>Likes: {this.props.activeMovie.likes}</p>
-                    <Stars currentMovie={this.props.activeMovie}/>
+                    <Stars changeStars={this.props.changeStars} stars={this.props.stars} id={this.props.id} />
                 </div>
                 <div className="description-about">
                     <div>

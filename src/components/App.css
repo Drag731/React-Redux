@@ -109,6 +109,10 @@
   clear: both;
 }
 
+.fa {
+  cursor: pointer;
+}
+
 .description {
   float: right;  
   border: 1px solid black;

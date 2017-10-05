@@ -1,4 +1,4 @@
-import { SEARCH_MOVIE, SORT_BY_LIKES, SORT_BY_RATING, LIKE_UP, LIKE_DOWN } from './MainPageActions';
+import { SEARCH_MOVIE, SORT_BY_LIKES, SORT_BY_RATING, LIKE_UP, LIKE_DOWN, CHANGE_STARS } from './MainPageActions';
 import movies from '../../components/data.js';
 
 const initialState = {
@@ -7,7 +7,8 @@ const initialState = {
     sortByLikes: 'on',
     sortByRating: 'on',
     flagSearch: '',
-    flagLike: 0
+    flagLike: 0,
+    flagStars: 0
 };
 
 const MoviesReducer = (state = initialState, action) => {
@@ -78,6 +79,19 @@ const MoviesReducer = (state = initialState, action) => {
             };
         }
 
+        case CHANGE_STARS: { 
+            return {
+                ...state,
+                initialMovies: movies.map(function(el) {
+                    if (el.id === action.movieId) {
+                        el.stars = action.payload;
+                    }
+                    return el;
+                }),
+                flagStars: state.flagStars + 1
+            };
+        }
+
         default: {
             return state;
         }
@@ -90,6 +104,7 @@ export const getMovieByRating = state => state.movies.sortByRating;
 export const getMovies = state => state.movies.movies;
 export const getInitialMovies = state => state.movies.initialMovies;
 export const getLike = state => state.movies.flagLike;
+export const getStars = state => state.movies.flagStars;
 
 // export const getSelectedMovie = state => state.movies.data.find((movie) => {
 //     return movie.id === state.movies.selectedMovieId;
